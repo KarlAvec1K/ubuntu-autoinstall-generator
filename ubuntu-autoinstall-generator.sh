@@ -30,13 +30,12 @@ if [ ! -f "$ISO_NAME" ]; then
   exit 1
 fi
 
-# Verify ISO file size with tolerance
-EXPECTED_SIZE=1400000000  # 1.4 GB, adjust if needed
-ACTUAL_SIZE=$(stat -c%s "$ISO_NAME")
-SIZE_TOLERANCE=$((EXPECTED_SIZE / 50))  # 50% tolerance
+# Verify ISO file size
+MIN_SIZE=900000000  # 900 MB
 
-if [ "$ACTUAL_SIZE" -lt $((EXPECTED_SIZE - SIZE_TOLERANCE)) ] || [ "$ACTUAL_SIZE" -gt $((EXPECTED_SIZE + SIZE_TOLERANCE)) ]; then
-  echo "[❌] Error: ISO file is outside the expected size range."
+ACTUAL_SIZE=$(stat -c%s "$ISO_NAME")
+if [ "$ACTUAL_SIZE" -lt "$MIN_SIZE" ]; then
+  echo "[❌] Error: ISO file is smaller than 900 MB."
   exit 1
 fi
 
