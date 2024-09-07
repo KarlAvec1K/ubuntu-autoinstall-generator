@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-ISO_URL="https://cdimage.ubuntu.com/ubuntu-server/focal/daily-live/current/focal-live-server-amd64.iso"
-ISO_NAME="focal-live-server-amd64.iso"
+ISO_URL="https://cdimage.ubuntu.com/ubuntu-server/focal/daily-live/current/focal-live-server-amd64+intel-iot.iso"
+ISO_NAME="focal-live-server-amd64+intel-iot.iso"
 WORK_DIR="ubuntu-autoinstall-work"
 MODIFIED_ISO="ubuntu-20.04-autoinstall.iso"
 
@@ -30,11 +30,22 @@ if [ ! -f "$ISO_NAME" ]; then
   exit 1
 fi
 
+# Verify ISO file size with tolerance
+EXPECTED_SIZE=1400000000  # 1.4 GB, adjust if needed
+ACTUAL_SIZE=$(stat -c%s "$ISO_NAME")
+SIZE_TOLERANCE=$((EXPECTED_SIZE / 20))  # 20% tolerance
+
+if [ "$ACTUAL_SIZE" -lt $((EXPECTED_SIZE - SIZE_TOLERANCE)) ] || [ "$ACTUAL_SIZE" -gt $((EXPECTED_SIZE + SIZE_TOLERANCE)) ]; then
+  echo "[❌] Error: ISO file is outside the expected size range."
+  exit 1
+fi
+
 # Create working directory
 mkdir -p "$WORK_DIR"
 
 # Extract the ISO
 echo "[🔧] Extracting ISO..."
+sudo umount /mnt 2>/dev/null
 sudo mount -o loop "$ISO_NAME" /mnt
 sudo rsync -a /mnt/ "$WORK_DIR/"
 sudo umount /mnt
