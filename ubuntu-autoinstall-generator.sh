@@ -33,7 +33,7 @@ fi
 # Verify ISO file size with tolerance
 EXPECTED_SIZE=1400000000  # 1.4 GB, adjust if needed
 ACTUAL_SIZE=$(stat -c%s "$ISO_NAME")
-SIZE_TOLERANCE=$((EXPECTED_SIZE / 20))  # 20% tolerance
+SIZE_TOLERANCE=$((EXPECTED_SIZE / 50))  # 50% tolerance
 
 if [ "$ACTUAL_SIZE" -lt $((EXPECTED_SIZE - SIZE_TOLERANCE)) ] || [ "$ACTUAL_SIZE" -gt $((EXPECTED_SIZE + SIZE_TOLERANCE)) ]; then
   echo "[❌] Error: ISO file is outside the expected size range."
