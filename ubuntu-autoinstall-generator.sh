@@ -65,7 +65,7 @@ function parse_params() {
         user_data_file=''
         meta_data_file=''
         download_url="https://cdimage.ubuntu.com/ubuntu-server/focal/daily-live/current"
-        download_iso="focal-live-server-amd64.iso"
+        download_iso="focal-live-server-amd64+intel-iot.iso" ## updated link as of 2024-09-25
         original_iso="ubuntu-original-$today.iso"
         source_iso="${script_dir}/${original_iso}"
         destination_iso="${script_dir}/ubuntu-autoinstall-$today.iso"
